@@ -1,7 +1,8 @@
-
 from flask import Flask, render_template, request, flash, redirect
-
 from flask_mail import Mail, Message
+import re
+
+email_condition = "^[a-z]+[\._]?[a-z 0-9]+[@]\w+[.]\w{2,3}$"
 
 app = Flask(__name__)
 
@@ -26,12 +27,19 @@ def send_msg():
         subject = request.form['subject']
         msg = request.form['message']
 
-        message = Message(subject, sender="dqstorm92@gmail.com", recipients = [email])
-        message.body = msg
-        mail.send(message)
-        success = "Đã gửi!"
+        #is_valid = validate_email('example@gmail.com', verify = True)
 
-        return render_template("result.html", success=success)
+        #if is_valid:
+        # Validate email
+        if re.search(email_condition, email):
+            message = Message(subject, sender="dqstorm92@gmail.com", recipients = [email])
+            message.body = msg
+            mail.send(message)
+            success = "Đã gửi!"
+            return render_template("result.html", success=success)
+        else:
+            fail = "Error!"
+            return render_template("fail.html", fail=fail)
 
 
 if __name__ == "__main__":

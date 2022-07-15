@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 flask = "*"
 flask-mail = "*"
+validate-email = "*"
+py3dns = "*"
 
 [dev-packages]
 
